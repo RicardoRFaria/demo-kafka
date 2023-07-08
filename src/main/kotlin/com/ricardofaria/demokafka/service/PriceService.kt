@@ -1,6 +1,5 @@
 package com.ricardofaria.demokafka.service
 
-import com.google.gson.Gson
 import com.ricardofaria.demokafka.model.PriceMessage
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.kafka.core.KafkaTemplate
@@ -12,6 +11,5 @@ class PriceService(private val kafkaProducer: KafkaTemplate<String, Any>, @Value
     fun sendPrice(priceMessage: PriceMessage) {
         kafkaProducer.send(changePriceTopic, priceMessage.id.toString(), priceMessage)
     }
-
 
 }

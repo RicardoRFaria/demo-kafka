@@ -11,6 +11,9 @@ class PriceMessageConsumer: MessageListener<String, PriceMessage> {
 
     override fun onMessage(consumerRecord: ConsumerRecord<String, PriceMessage>) {
         val priceMessage = consumerRecord.value()
+        if (priceMessage.price <= 0) {
+            throw IllegalArgumentException("Invalid price received, message will not be consumed")
+        }
         println("Received price message: $priceMessage")
     }
 

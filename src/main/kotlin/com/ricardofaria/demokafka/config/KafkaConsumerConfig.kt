@@ -1,12 +1,12 @@
 package com.ricardofaria.demokafka.config
 
 import com.ricardofaria.demokafka.messages.PriceMessageConsumer
-import com.ricardofaria.demokafka.model.PriceMessage
 import org.apache.kafka.clients.consumer.ConsumerConfig
 import org.apache.kafka.common.serialization.StringDeserializer
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.context.annotation.Profile
 import org.springframework.kafka.annotation.EnableKafka
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory
 import org.springframework.kafka.core.ConsumerFactory
@@ -15,9 +15,9 @@ import org.springframework.kafka.listener.ConcurrentMessageListenerContainer
 import org.springframework.kafka.listener.ContainerProperties
 import org.springframework.kafka.support.serializer.JsonDeserializer
 
-
 @EnableKafka
 @Configuration
+@Profile("instance-with-consuming-01 || instance-with-consuming-02")
 class KafkaConsumerConfig(
     @Value(value = "\${spring.kafka.bootstrap-servers}") private val bootstrapServers: String,
     @Value(value = "\${kafka.consumer.group-id}") private val consumerGroupId: String,
@@ -47,7 +47,10 @@ class KafkaConsumerConfig(
     }
 
     @Bean
-    fun messageListenerContainer(consumerFactory:  ConsumerFactory<String, Any>, priceMessageConsumer: PriceMessageConsumer): ConcurrentMessageListenerContainer<*, *> {
+    fun messageListenerContainer(
+        consumerFactory: ConsumerFactory<String, Any>,
+        priceMessageConsumer: PriceMessageConsumer
+    ): ConcurrentMessageListenerContainer<*, *> {
         val containerProperties = ContainerProperties(changePriceTopic)
         containerProperties.messageListener = priceMessageConsumer
 

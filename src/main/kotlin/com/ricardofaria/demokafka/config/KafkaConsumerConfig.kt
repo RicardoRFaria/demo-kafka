@@ -17,7 +17,7 @@ import org.springframework.kafka.support.serializer.JsonDeserializer
 
 @EnableKafka
 @Configuration
-@Profile("instance-with-consuming-01 || instance-with-consuming-02")
+@Profile("instance-with-consuming-01 || instance-with-consuming-02 || instance-with-consuming-03")
 class KafkaConsumerConfig(
     @Value(value = "\${spring.kafka.bootstrap-servers}") private val bootstrapServers: String,
     @Value(value = "\${kafka.consumer.group-id}") private val consumerGroupId: String,
